@@ -1,0 +1,3 @@
+/home/ajays/personal/scheduler/build/CMakeFiles/main.dir
+/home/ajays/personal/scheduler/build/CMakeFiles/edit_cache.dir
+/home/ajays/personal/scheduler/build/CMakeFiles/rebuild_cache.dir
