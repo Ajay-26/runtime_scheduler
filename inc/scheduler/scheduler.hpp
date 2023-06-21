@@ -18,7 +18,6 @@ private:
 
     bool compare_func(void* w1, void* w2);
 
-    typedef uint8_t dummy_type;
     std::atomic<bool> end;
     int n_threads;
     int n_tasks;
@@ -30,14 +29,13 @@ private:
 public:
     RunTimeScheduler(int n_threads);
     ~RunTimeScheduler();
-    void worker_func();
+    void worker_func(int id);
 
     template <typename _runnable>
     void launch_task(_runnable f);
 
     template <typename _callable, class... args>
-    void launch_task(_callable f,args&&... var_args);   //Use the rvalue reference since the args may also be rvalue references and we may want to extend their scope
-
+    void launch_task(_callable f,args... var_args);   
 };
 
 template <typename _runnable>
@@ -51,7 +49,7 @@ void RunTimeScheduler::launch_task(_runnable f){
 }
 
 template <typename _callable, class... args>
-void RunTimeScheduler::launch_task(_callable f, args&&... var_args){
+void RunTimeScheduler::launch_task(_callable f, args... var_args){
     WorkerArgs* w = new WorkerArgs;
     w->no_args = false;
     //bind the function with its arguments so that we don't have to store the args for later. Now w->func holds f(var_args)

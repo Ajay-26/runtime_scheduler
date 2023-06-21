@@ -12,7 +12,7 @@ RunTimeScheduler::RunTimeScheduler(int n_threads){
     this->q.init(nullptr);
 
     for(i=0;i<this->n_threads;i++){
-        this->_threads.push_back(std::thread(&RunTimeScheduler::worker_func,this));
+        this->_threads.push_back(std::thread(&RunTimeScheduler::worker_func,this,i));
     }
     return;
 }
@@ -38,7 +38,7 @@ RunTimeScheduler::~RunTimeScheduler(){
     return;
 }
 
-void RunTimeScheduler::worker_func(){
+void RunTimeScheduler::worker_func(int id){
     while(true){
         if(this->end == true && this->q.is_empty()){
             break;
@@ -46,7 +46,9 @@ void RunTimeScheduler::worker_func(){
             WorkerArgs* w;
             if(!this->q.is_empty()){
                 w = static_cast<WorkerArgs* > (this->q.extract_top());
+                std::printf("Thread %d took task!\n", id);
                 ((w->func))();
+
             }
         }
     }
